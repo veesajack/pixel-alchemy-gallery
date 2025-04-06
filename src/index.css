@@ -14,16 +14,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 246 79% 60%;
+    --primary: 6 94% 59%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 262 83% 76%;
+    --secondary: 215 10% 23%;
     --secondary-foreground: 222 47% 11%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 271 94% 75%;
+    --accent: 174 70% 42%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -31,7 +31,7 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 246 79% 60%;
+    --ring: 6 94% 59%;
 
     --radius: 0.5rem;
   }
@@ -46,16 +46,16 @@
     --popover: 222 47% 11%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 246 79% 60%;
+    --primary: 6 94% 59%;
     --primary-foreground: 222 47% 11%;
 
-    --secondary: 262 83% 76%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 215 10% 23%;
+    --secondary-foreground: 210 40% 98%;
 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 271 94% 75%;
+    --accent: 174 70% 42%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -63,7 +63,7 @@
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 246 79% 60%;
+    --ring: 6 94% 59%;
   }
 }
 
@@ -78,27 +78,27 @@
   }
   
   h1 {
-    @apply text-4xl font-bold sm:text-5xl md:text-6xl;
+    @apply text-4xl font-bold sm:text-5xl md:text-6xl leading-tight;
   }
   
   h2 {
-    @apply text-3xl font-bold sm:text-4xl;
+    @apply text-3xl font-bold sm:text-4xl leading-tight;
   }
   
   h3 {
-    @apply text-2xl font-bold sm:text-3xl;
+    @apply text-2xl font-bold sm:text-3xl leading-tight;
   }
   
   h4 {
-    @apply text-xl font-bold sm:text-2xl;
+    @apply text-xl font-bold sm:text-2xl leading-tight;
   }
   
   h5 {
-    @apply text-lg font-bold sm:text-xl;
+    @apply text-lg font-bold sm:text-xl leading-tight;
   }
   
   h6 {
-    @apply text-base font-bold sm:text-lg;
+    @apply text-base font-bold sm:text-lg leading-tight;
   }
 }
 
@@ -114,7 +114,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: theme('colors.primary.DEFAULT');
+  background: theme('colors.ai.primary');
   border-radius: 4px;
 }
 
@@ -134,4 +134,25 @@
 
 .loader {
   animation: loader 1.5s linear infinite;
+}
+
+/* n8n specific styles */
+.n8n-btn {
+  @apply rounded-lg font-medium transition-all duration-200 inline-flex items-center justify-center;
+}
+
+.n8n-btn-primary {
+  @apply bg-ai-primary text-white hover:bg-ai-primary/90 hover:shadow-md;
+}
+
+.n8n-btn-secondary {
+  @apply bg-white text-ai-secondary border border-gray-200 hover:border-gray-300 hover:shadow-sm;
+}
+
+.n8n-card {
+  @apply rounded-xl border border-gray-100 bg-white shadow-sm hover:shadow-md transition-all duration-300;
+}
+
+.n8n-gradient-text {
+  @apply bg-clip-text text-transparent bg-n8n-gradient;
 }

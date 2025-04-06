@@ -63,13 +63,13 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom colors for our AI art platform
+				// Custom colors for our AI art platform - updated to match n8n.io style
 				ai: {
-					primary: '#6366f1',     // Indigo-500
-					secondary: '#a78bfa',   // Violet-400
-					accent: '#c084fc',      // Purple-400
-					dark: '#312e81',        // Indigo-900
-					light: '#e0e7ff'        // Indigo-100
+					primary: '#FF6D5A',     // n8n coral/orange primary
+					secondary: '#35393E',   // n8n dark gray 
+					accent: '#20B8A1',      // n8n teal accent
+					dark: '#252A31',        // n8n dark background
+					light: '#F5F5F5'        // n8n light background
 				}
 			},
 			borderRadius: {
@@ -112,17 +112,27 @@ export default {
 					'100%': {
 						backgroundPosition: '0% 50%'
 					}
+				},
+				'float': {
+					'0%, 100%': {
+						transform: 'translateY(0)'
+					},
+					'50%': {
+						transform: 'translateY(-10px)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
-				'gradient-shift': 'gradient-shift 10s ease infinite'
+				'gradient-shift': 'gradient-shift 10s ease infinite',
+				'float': 'float 6s ease-in-out infinite'
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				'hero-pattern': 'linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%)'
+				'hero-pattern': 'linear-gradient(135deg, #F5F5F5 0%, #FAFAFA 100%)',
+				'n8n-gradient': 'linear-gradient(90deg, #FF6D5A 0%, #F53A2F 100%)'
 			}
 		}
 	},

@@ -56,11 +56,14 @@ const plans = [
 
 const PricingSection = () => {
   return (
-    <section className="w-full py-12 md:py-24">
-      <div className="container space-y-12">
-        <div className="text-center space-y-4">
-          <h2 className="font-bold">Simple, Transparent Pricing</h2>
-          <p className="text-muted-foreground text-lg max-w-[42rem] mx-auto">
+    <section className="w-full py-16 md:py-24 bg-gray-50">
+      <div className="container px-4 md:px-6">
+        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+          <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm text-gray-800">
+            Pricing
+          </div>
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Simple, Transparent Pricing</h2>
+          <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
             Choose the plan that best fits your needs. All plans include access to our core features.
           </p>
         </div>
@@ -69,32 +72,34 @@ const PricingSection = () => {
           {plans.map((plan, index) => (
             <div 
               key={index} 
-              className={`flex flex-col rounded-lg border ${plan.popular ? 'border-ai-primary shadow-lg' : 'shadow-sm'} bg-card p-6 transition-all hover:shadow-md`}
+              className={`flex flex-col rounded-xl border ${plan.popular ? 'border-ai-primary shadow-lg relative' : 'border-gray-200'} bg-white p-8 transition-all hover:shadow-md`}
             >
               {plan.popular && (
-                <div className="inline-block rounded-full bg-ai-primary px-3 py-1 text-xs font-medium text-white mb-4 w-fit">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 inline-block rounded-full bg-ai-primary px-3 py-1 text-xs font-medium text-white">
                   Most Popular
                 </div>
               )}
               
-              <h3 className="text-2xl font-bold">{plan.name}</h3>
-              <div className="mt-2 mb-4">
-                <span className="text-3xl font-bold">{plan.price}</span>
-                {plan.period && <span className="text-muted-foreground">{plan.period}</span>}
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold">{plan.name}</h3>
+                <div className="mt-2">
+                  <span className="text-4xl font-bold">{plan.price}</span>
+                  {plan.period && <span className="text-gray-500">{plan.period}</span>}
+                </div>
+                <p className="text-gray-500 mt-3">{plan.description}</p>
               </div>
-              <p className="text-muted-foreground mb-6">{plan.description}</p>
               
-              <ul className="space-y-2 mb-8 flex-grow">
+              <ul className="space-y-3 mb-8 flex-grow">
                 {plan.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-start gap-2">
-                    <Check className={`h-5 w-5 ${plan.popular ? 'text-ai-primary' : 'text-foreground'} shrink-0 mt-0.5`} />
-                    <span>{feature}</span>
+                    <Check className={`h-5 w-5 text-ai-primary flex-shrink-0 mt-0.5`} />
+                    <span className="text-gray-700">{feature}</span>
                   </li>
                 ))}
               </ul>
               
               <Button 
-                className={`w-full ${plan.popular ? 'bg-ai-primary hover:bg-ai-dark text-white' : ''}`}
+                className={`w-full h-12 ${plan.popular ? 'bg-ai-primary hover:bg-ai-primary/90' : 'bg-white border border-gray-200 text-gray-900 hover:bg-gray-50'}`}
                 variant={plan.popular ? 'default' : 'outline'}
               >
                 {plan.buttonText}
@@ -103,7 +108,7 @@ const PricingSection = () => {
           ))}
         </div>
         
-        <div className="text-center text-sm text-muted-foreground pt-6">
+        <div className="text-center text-sm text-gray-500 pt-8">
           All plans are billed monthly. You can upgrade, downgrade, or cancel at any time.
           <br />
           Need a custom solution? <a href="#" className="text-ai-primary hover:underline">Contact our sales team</a>.
