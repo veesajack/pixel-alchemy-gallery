@@ -21,6 +21,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/generate" element={<Generate />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/community" element={<Gallery />} /> {/* Add community route pointing to Gallery component */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

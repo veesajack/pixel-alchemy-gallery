@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,191 +14,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Heart, Share2, MoreVertical, Download, Link } from "lucide-react";
-
-// Mock image data
-const mockImages = [
-  {
-    id: '1',
-    url: 'https://source.unsplash.com/random/512x512?fantasy',
-    prompt: 'A magical castle in the clouds with rainbow bridges',
-    likes: 124,
-    user: 'artistic_ai',
-    isLiked: false
-  },
-  {
-    id: '2',
-    url: 'https://source.unsplash.com/random/512x512?scifi',
-    prompt: 'Futuristic city with flying cars and neon lights',
-    likes: 89,
-    user: 'future_dreamer',
-    isLiked: true
-  },
-  {
-    id: '3',
-    url: 'https://source.unsplash.com/random/512x512?nature',
-    prompt: 'Enchanted forest with glowing mushrooms and fairy lights',
-    likes: 201,
-    user: 'nature_lover',
-    isLiked: false
-  },
-  {
-    id: '4',
-    url: 'https://source.unsplash.com/random/512x512?abstract',
-    prompt: 'Abstract fractal patterns in vibrant colors',
-    likes: 56,
-    user: 'abstract_mind',
-    isLiked: false
-  },
-  {
-    id: '5',
-    url: 'https://source.unsplash.com/random/512x512?portrait',
-    prompt: 'Cyberpunk character with glowing cybernetic implants',
-    likes: 167,
-    user: 'cyber_punk',
-    isLiked: false
-  },
-  {
-    id: '6',
-    url: 'https://source.unsplash.com/random/512x512?space',
-    prompt: 'Nebula with stars and planets in deep space',
-    likes: 143,
-    user: 'space_explorer',
-    isLiked: true
-  },
-];
-
-const ImageGallery = () => {
-  const [activeTab, setActiveTab] = useState('trending');
-  const [images, setImages] = useState(mockImages);
-  const [loading, setLoading] = useState(false);
-  
-  const toggleLike = (id: string) => {
-    setImages(images.map(img => {
-      if (img.id === id) {
-        return { 
-          ...img, 
-          isLiked: !img.isLiked, 
-          likes: img.isLiked ? img.likes - 1 : img.likes + 1 
-        };
-      }
-      return img;
-    }));
-  };
-  
-  // Simulating loading more images
-  const loadMore = () => {
-    setLoading(true);
-    
-    // In a real app, this would be an API call to fetch more images
-    setTimeout(() => {
-      const newImages = [...mockImages].map((img, index) => ({
-        ...img,
-        id: `new-${index}`,
-        url: `${img.url}&t=${Date.now()}`,
-      }));
-      
-      setImages([...images, ...newImages]);
-      setLoading(false);
-    }, 1500);
-  };
-  
-  // Simulate fetching different images when tab changes
-  useEffect(() => {
-    setLoading(true);
-    
-    setTimeout(() => {
-      const shuffledImages = [...mockImages]
-        .sort(() => Math.random() - 0.5)
-        .map((img, index) => ({
-          ...img,
-          id: `tab-${index}`,
-          url: `${img.url.split('?')[0]}?${activeTab}&t=${Date.now()}`,
-        }));
-      
-      setImages(shuffledImages);
-      setLoading(false);
-    }, 800);
-  }, [activeTab]);
-  
-  return (
-    <div className="w-full space-y-6">
-      <Tabs defaultValue="trending" onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3 mb-6">
-          <TabsTrigger value="trending">Trending</TabsTrigger>
-          <TabsTrigger value="newest">Newest</TabsTrigger>
-          <TabsTrigger value="following">Following</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="trending" className="m-0">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {images.map((image) => (
-              <ImageCard 
-                key={image.id}
-                image={image}
-                onToggleLike={toggleLike}
-              />
-            ))}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="newest" className="m-0">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {images.map((image) => (
-              <ImageCard 
-                key={image.id}
-                image={image}
-                onToggleLike={toggleLike}
-              />
-            ))}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="following" className="m-0">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {images.map((image) => (
-              <ImageCard 
-                key={image.id}
-                image={image}
-                onToggleLike={toggleLike}
-              />
-            ))}
-          </div>
-        </TabsContent>
-      </Tabs>
-      
-      <div className="flex justify-center mt-8">
-        <Button 
-          variant="outline" 
-          onClick={loadMore}
-          disabled={loading}
-          className="min-w-[150px]"
-        >
-          {loading ? (
-            <>
-              <svg className="loader mr-2 h-4 w-4" viewBox="0 0 24 24">
-                <circle 
-                  className="opacity-25" 
-                  cx="12" 
-                  cy="12" 
-                  r="10" 
-                  stroke="currentColor" 
-                  strokeWidth="4"
-                  fill="none"
-                ></circle>
-                <path 
-                  className="opacity-75" 
-                  fill="currentColor" 
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              Loading...
-            </>
-          ) : "Load More"}
-        </Button>
-      </div>
-    </div>
-  );
-};
 
 interface ImageCardProps {
   image: {
@@ -271,6 +86,193 @@ const ImageCard = ({ image, onToggleLike }: ImageCardProps) => {
         </div>
       </CardFooter>
     </Card>
+  );
+};
+
+interface ImageGalleryProps {
+  images: {
+    id: string;
+    url: string;
+    prompt: string;
+    likes: number;
+    user: string;
+    isLiked: boolean;
+  }[];
+  onToggleLike: (id: string) => void;
+  isLoading?: boolean;
+  activeTab?: string;
+  onTabChange?: (tab: string) => void;
+}
+
+const ImageGallery = ({ 
+  images = [], 
+  onToggleLike,
+  isLoading = false,
+  activeTab = 'trending',
+  onTabChange = () => {}
+}: ImageGalleryProps) => {
+  const [loading, setLoading] = useState(false);
+  
+  const loadMore = () => {
+    setLoading(true);
+    
+    // In a real app, this would trigger loading more images from the database
+    // For now, we'll just simulate loading state
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  };
+  
+  return (
+    <div className="w-full space-y-6">
+      <Tabs 
+        defaultValue={activeTab} 
+        value={activeTab} 
+        onValueChange={onTabChange}
+      >
+        <TabsList className="grid w-full grid-cols-3 mb-6">
+          <TabsTrigger value="trending">Trending</TabsTrigger>
+          <TabsTrigger value="newest">Newest</TabsTrigger>
+          <TabsTrigger value="following">Following</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="trending" className="m-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {isLoading ? (
+              // Skeleton loading state
+              Array(6).fill(0).map((_, i) => (
+                <Card key={`skeleton-${i}`} className="overflow-hidden h-full">
+                  <div className="aspect-square bg-gray-200 animate-pulse" />
+                  <CardFooter className="flex justify-between items-center p-4">
+                    <div className="w-2/3">
+                      <div className="h-4 bg-gray-200 animate-pulse rounded mb-2" />
+                      <div className="h-3 bg-gray-200 animate-pulse rounded w-3/4" />
+                    </div>
+                    <div className="flex space-x-2">
+                      <div className="h-8 w-8 bg-gray-200 animate-pulse rounded-full" />
+                      <div className="h-8 w-8 bg-gray-200 animate-pulse rounded-full" />
+                    </div>
+                  </CardFooter>
+                </Card>
+              ))
+            ) : images.length > 0 ? (
+              images.map((image) => (
+                <ImageCard 
+                  key={image.id}
+                  image={image}
+                  onToggleLike={onToggleLike}
+                />
+              ))
+            ) : (
+              <div className="col-span-3 py-12 text-center">
+                <p className="text-lg text-muted-foreground">No images found. Be the first to generate and share!</p>
+              </div>
+            )}
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="newest" className="m-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {isLoading ? (
+              Array(6).fill(0).map((_, i) => (
+                <Card key={`skeleton-${i}`} className="overflow-hidden h-full">
+                  <div className="aspect-square bg-gray-200 animate-pulse" />
+                  <CardFooter className="flex justify-between items-center p-4">
+                    <div className="w-2/3">
+                      <div className="h-4 bg-gray-200 animate-pulse rounded mb-2" />
+                      <div className="h-3 bg-gray-200 animate-pulse rounded w-3/4" />
+                    </div>
+                    <div className="flex space-x-2">
+                      <div className="h-8 w-8 bg-gray-200 animate-pulse rounded-full" />
+                      <div className="h-8 w-8 bg-gray-200 animate-pulse rounded-full" />
+                    </div>
+                  </CardFooter>
+                </Card>
+              ))
+            ) : images.length > 0 ? (
+              images.map((image) => (
+                <ImageCard 
+                  key={image.id}
+                  image={image}
+                  onToggleLike={onToggleLike}
+                />
+              ))
+            ) : (
+              <div className="col-span-3 py-12 text-center">
+                <p className="text-lg text-muted-foreground">No images found. Be the first to generate and share!</p>
+              </div>
+            )}
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="following" className="m-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {isLoading ? (
+              Array(6).fill(0).map((_, i) => (
+                <Card key={`skeleton-${i}`} className="overflow-hidden h-full">
+                  <div className="aspect-square bg-gray-200 animate-pulse" />
+                  <CardFooter className="flex justify-between items-center p-4">
+                    <div className="w-2/3">
+                      <div className="h-4 bg-gray-200 animate-pulse rounded mb-2" />
+                      <div className="h-3 bg-gray-200 animate-pulse rounded w-3/4" />
+                    </div>
+                    <div className="flex space-x-2">
+                      <div className="h-8 w-8 bg-gray-200 animate-pulse rounded-full" />
+                      <div className="h-8 w-8 bg-gray-200 animate-pulse rounded-full" />
+                    </div>
+                  </CardFooter>
+                </Card>
+              ))
+            ) : images.length > 0 ? (
+              images.map((image) => (
+                <ImageCard 
+                  key={image.id}
+                  image={image}
+                  onToggleLike={onToggleLike}
+                />
+              ))
+            ) : (
+              <div className="col-span-3 py-12 text-center">
+                <p className="text-lg text-muted-foreground">No images found yet. Follow creators to see their work here!</p>
+              </div>
+            )}
+          </div>
+        </TabsContent>
+      </Tabs>
+      
+      {images.length > 0 && (
+        <div className="flex justify-center mt-8">
+          <Button 
+            variant="outline" 
+            onClick={loadMore}
+            disabled={loading || isLoading}
+            className="min-w-[150px]"
+          >
+            {loading ? (
+              <>
+                <svg className="loader mr-2 h-4 w-4 animate-spin" viewBox="0 0 24 24">
+                  <circle 
+                    className="opacity-25" 
+                    cx="12" 
+                    cy="12" 
+                    r="10" 
+                    stroke="currentColor" 
+                    strokeWidth="4"
+                    fill="none"
+                  ></circle>
+                  <path 
+                    className="opacity-75" 
+                    fill="currentColor" 
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Loading...
+              </>
+            ) : "Load More"}
+          </Button>
+        </div>
+      )}
+    </div>
   );
 };
 
