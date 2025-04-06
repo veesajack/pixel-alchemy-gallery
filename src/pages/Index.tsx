@@ -9,8 +9,42 @@ import PricingSection from '@/components/PricingSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const Index = () => {
+  // This is just a placeholder for the demo gallery on the homepage
+  const [demoImages] = useState([
+    {
+      id: 'demo1',
+      url: 'https://images.unsplash.com/photo-1673158675083-d43f4e229fd5',
+      prompt: 'Futuristic city with flying cars',
+      likes: 42,
+      user: 'creativeminds',
+      isLiked: false
+    },
+    {
+      id: 'demo2',
+      url: 'https://images.unsplash.com/photo-1698161236987-e66ad191a502',
+      prompt: 'Space station orbiting Earth',
+      likes: 28,
+      user: 'stargazer',
+      isLiked: false
+    },
+    {
+      id: 'demo3',
+      url: 'https://images.unsplash.com/photo-1669447894158-80ca24f67d2b',
+      prompt: 'Underwater civilization',
+      likes: 35,
+      user: 'oceanlover',
+      isLiked: false
+    }
+  ]);
+
+  // Dummy function for demo purposes
+  const handleToggleLike = (id: string) => {
+    console.log(`Toggle like for image ${id}`);
+  };
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -43,7 +77,13 @@ const Index = () => {
               </p>
             </div>
             
-            <ImageGallery />
+            <ImageGallery 
+              images={demoImages}
+              onToggleLike={handleToggleLike}
+              isLoading={false}
+              activeTab="trending"
+              onTabChange={() => {}}
+            />
             
             <div className="text-center mt-12">
               <Button size="lg" variant="outline" asChild>
