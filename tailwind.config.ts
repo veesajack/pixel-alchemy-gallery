@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -74,6 +73,9 @@ export default {
       },
       borderRadius: {
         '4xl': '2rem',
+      },
+      borderColor: {
+        DEFAULT: 'hsl(var(--border))',
       }
     }
   },
