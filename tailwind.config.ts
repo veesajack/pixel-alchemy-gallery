@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -25,6 +26,19 @@ export default {
           accent: '#2E7D32',      // Slightly lighter green
           dark: '#040D0A',        // Deep almost black
           light: '#E8F5E9'        // Very light green
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--border))",
+        ring: "hsl(var(--border))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
         }
       },
       backgroundImage: {
@@ -57,12 +71,22 @@ export default {
           '50%': {
             opacity: '0.7'
           }
-        }
+        },
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
       },
       animation: {
         'gradient-shift': 'gradient-shift 10s ease infinite',
         'float': 'float 6s ease-in-out infinite',
-        'pulse-slow': 'pulse-slow 4s ease-in-out infinite'
+        'pulse-slow': 'pulse-slow 4s ease-in-out infinite',
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
       typography: {
         DEFAULT: {
@@ -73,9 +97,6 @@ export default {
       },
       borderRadius: {
         '4xl': '2rem',
-      },
-      borderColor: {
-        DEFAULT: 'hsl(var(--border))',
       }
     }
   },
