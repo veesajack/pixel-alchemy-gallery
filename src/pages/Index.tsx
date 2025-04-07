@@ -17,7 +17,7 @@ const Index = () => {
   const [demoImages] = useState([
     {
       id: 'demo1',
-      url: 'https://images.unsplash.com/photo-1673158675083-d43f4e229fd5',
+      url: 'https://images.unsplash.com/photo-1698498570187-af92256d7984?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       prompt: 'Futuristic city with flying cars',
       likes: 42,
       user: 'creativeminds',
@@ -25,7 +25,7 @@ const Index = () => {
     },
     {
       id: 'demo2',
-      url: 'https://images.unsplash.com/photo-1698161236987-e66ad191a502',
+      url: 'https://images.unsplash.com/photo-1675703868369-7cc625a36cd4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       prompt: 'Space station orbiting Earth',
       likes: 28,
       user: 'stargazer',
@@ -33,7 +33,7 @@ const Index = () => {
     },
     {
       id: 'demo3',
-      url: 'https://images.unsplash.com/photo-1669447894158-80ca24f67d2b',
+      url: 'https://images.unsplash.com/photo-1700096459296-a0f8df31fadb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       prompt: 'Underwater civilization',
       likes: 35,
       user: 'oceanlover',
@@ -61,12 +61,12 @@ const Index = () => {
               <p className="text-gray-500 text-sm">TRUSTED BY CREATORS AROUND THE WORLD</p>
             </div>
             <div className="flex flex-wrap justify-center items-center gap-8 opacity-70">
-              <img src="https://placehold.co/120x40?text=LOGO" alt="Client logo" className="h-8" />
-              <img src="https://placehold.co/120x40?text=LOGO" alt="Client logo" className="h-8" />
-              <img src="https://placehold.co/120x40?text=LOGO" alt="Client logo" className="h-8" />
-              <img src="https://placehold.co/120x40?text=LOGO" alt="Client logo" className="h-8" />
-              <img src="https://placehold.co/120x40?text=LOGO" alt="Client logo" className="h-8" />
-              <img src="https://placehold.co/120x40?text=LOGO" alt="Client logo" className="h-8" />
+              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Client logo" className="h-8 w-auto" />
+              <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Client logo" className="h-8 w-auto" />
+              <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Client logo" className="h-8 w-auto" />
+              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Adobe_Systems_logo_and_wordmark.svg" alt="Client logo" className="h-8 w-auto" />
+              <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Client logo" className="h-8 w-auto" />
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Client logo" className="h-8 w-auto" />
             </div>
           </div>
         </section>

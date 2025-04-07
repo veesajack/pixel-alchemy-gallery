@@ -31,17 +31,17 @@ const HeroSection = () => {
               <img
                 alt="User"
                 className="h-8 w-8 rounded-full border-2 border-ai-dark"
-                src="https://randomuser.me/api/portraits/women/11.jpg"
+                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
               />
               <img
                 alt="User"
                 className="h-8 w-8 rounded-full border-2 border-ai-dark"
-                src="https://randomuser.me/api/portraits/men/13.jpg"
+                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
               />
               <img
                 alt="User"
                 className="h-8 w-8 rounded-full border-2 border-ai-dark"
-                src="https://randomuser.me/api/portraits/women/42.jpg"
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
               />
             </div>
             <div>
@@ -54,7 +54,7 @@ const HeroSection = () => {
           <div className="relative aspect-[16/9] glass p-2 md:p-4 rounded-4xl overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center">
               <img 
-                src="https://images.unsplash.com/photo-1673158675083-d43f4e229fd5" 
+                src="https://images.unsplash.com/photo-1698498570187-af92256d7984?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" 
                 alt="AI generated art example" 
                 className="w-full h-full object-cover rounded-3xl"
               />
@@ -65,7 +65,7 @@ const HeroSection = () => {
           
           <div className="absolute -top-8 left-1/4 transform -translate-x-1/2 w-32 h-32 md:w-40 md:h-40 glass rounded-2xl p-2 shadow-xl animate-float">
             <img 
-              src="https://images.unsplash.com/photo-1698161236987-e66ad191a502" 
+              src="https://images.unsplash.com/photo-1675703868369-7cc625a36cd4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
               alt="AI generated art example" 
               className="w-full h-full object-cover rounded-xl"
             />
@@ -73,7 +73,7 @@ const HeroSection = () => {
           
           <div className="absolute -bottom-10 right-1/4 transform translate-x-1/2 w-32 h-32 md:w-40 md:h-40 glass rounded-2xl p-2 shadow-xl animate-float" style={{ animationDelay: "1s" }}>
             <img 
-              src="https://images.unsplash.com/photo-1669447894158-80ca24f67d2b" 
+              src="https://images.unsplash.com/photo-1700096459296-a0f8df31fadb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
               alt="AI generated art example" 
               className="w-full h-full object-cover rounded-xl"
             />
