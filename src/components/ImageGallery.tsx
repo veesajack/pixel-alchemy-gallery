@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import {
@@ -189,7 +190,22 @@ const ImageGallery = ({
         <TabsContent value="newest" className="m-0">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {isLoading ? (
-              // ... keep existing code (for the loading skeleton)
+              // Skeleton loading state
+              Array(6).fill(0).map((_, i) => (
+                <Card key={`skeleton-${i}`} className="glass-card overflow-hidden h-full">
+                  <div className="aspect-square bg-white/5 animate-pulse rounded-t-xl" />
+                  <CardFooter className="flex justify-between items-center p-4 glass">
+                    <div className="w-2/3">
+                      <div className="h-4 bg-white/10 animate-pulse rounded mb-2" />
+                      <div className="h-3 bg-white/10 animate-pulse rounded w-3/4" />
+                    </div>
+                    <div className="flex space-x-2">
+                      <div className="h-8 w-8 bg-white/10 animate-pulse rounded-full" />
+                      <div className="h-8 w-8 bg-white/10 animate-pulse rounded-full" />
+                    </div>
+                  </CardFooter>
+                </Card>
+              ))
             ) : images.length > 0 ? (
               images.map((image) => (
                 <ImageCard 
@@ -209,7 +225,22 @@ const ImageGallery = ({
         <TabsContent value="following" className="m-0">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {isLoading ? (
-              // ... keep existing code (for the loading skeleton)
+              // Skeleton loading state
+              Array(6).fill(0).map((_, i) => (
+                <Card key={`skeleton-${i}`} className="glass-card overflow-hidden h-full">
+                  <div className="aspect-square bg-white/5 animate-pulse rounded-t-xl" />
+                  <CardFooter className="flex justify-between items-center p-4 glass">
+                    <div className="w-2/3">
+                      <div className="h-4 bg-white/10 animate-pulse rounded mb-2" />
+                      <div className="h-3 bg-white/10 animate-pulse rounded w-3/4" />
+                    </div>
+                    <div className="flex space-x-2">
+                      <div className="h-8 w-8 bg-white/10 animate-pulse rounded-full" />
+                      <div className="h-8 w-8 bg-white/10 animate-pulse rounded-full" />
+                    </div>
+                  </CardFooter>
+                </Card>
+              ))
             ) : images.length > 0 ? (
               images.map((image) => (
                 <ImageCard 
