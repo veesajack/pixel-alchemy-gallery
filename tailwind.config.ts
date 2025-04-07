@@ -20,7 +20,6 @@ export default {
     },
     extend: {
       colors: {
-        // Update primary colors to green and black gradient palette
         ai: {
           primary: '#1B5E20',     // Dark green
           secondary: '#081C15',   // Almost black green
@@ -30,10 +29,10 @@ export default {
         }
       },
       backgroundImage: {
-        // Add green and black gradients
         'primary-gradient': 'linear-gradient(135deg, #1B5E20 0%, #081C15 100%)',
         'accent-gradient': 'linear-gradient(90deg, #2E7D32 0%, #040D0A 100%)',
-        'hero-gradient': 'linear-gradient(to right, #1B5E20 0%, #081C15 100%)'
+        'hero-gradient': 'radial-gradient(circle at 30% 30%, #2E7D32 0%, #040D0A 80%)',
+        'card-gradient': 'linear-gradient(180deg, rgba(46, 125, 50, 0.1) 0%, rgba(4, 13, 10, 0.2) 100%)'
       },
       keyframes: {
         'gradient-shift': {
@@ -43,10 +42,38 @@ export default {
           '50%': { 
             backgroundPosition: '100% 50%'
           }
+        },
+        'float': {
+          '0%, 100%': {
+            transform: 'translateY(0px)'
+          },
+          '50%': {
+            transform: 'translateY(-20px)'
+          }
+        },
+        'pulse-slow': {
+          '0%, 100%': {
+            opacity: '1'
+          },
+          '50%': {
+            opacity: '0.7'
+          }
         }
       },
       animation: {
-        'gradient-shift': 'gradient-shift 10s ease infinite'
+        'gradient-shift': 'gradient-shift 10s ease infinite',
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-slow': 'pulse-slow 4s ease-in-out infinite'
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: '100%',
+          },
+        },
+      },
+      borderRadius: {
+        '4xl': '2rem',
       }
     }
   },
