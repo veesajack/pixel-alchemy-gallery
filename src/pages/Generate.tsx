@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -5,11 +6,95 @@ import PromptInput from '@/components/PromptInput';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Download, Share2, Link } from "lucide-react";
+import { toast } from "sonner";
+import { uploadImage } from '@/utils/supabaseStorage';
+import { supabase } from '@/integrations/supabase/client';
 
 const Generate = () => {
-  const [generatedImage, setGeneratedImage] = useState<string | null>(
-    "https://images.unsplash.com/photo-1516737490857-847e4f4f9dea"
-  );
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Function to get a random image from Supabase storage
+  const getRandomImage = async () => {
+    setIsLoading(true);
+    try {
+      // List all files in the images bucket
+      const { data: storageData, error: storageError } = await supabase.storage
+        .from('images')
+        .list();
+        
+      if (storageError) {
+        console.error('Error fetching storage images:', storageError);
+        toast.error("Error loading images");
+        return;
+      }
+      
+      if (!storageData || storageData.length === 0) {
+        toast.error("No images found. Please seed some images first.");
+        return;
+      }
+      
+      // Select a random image
+      const randomImage = storageData[Math.floor(Math.random() * storageData.length)];
+      if (randomImage && !randomImage.id.endsWith('/')) {
+        // Get the public URL for the image
+        const { data } = supabase.storage
+          .from('images')
+          .getPublicUrl(randomImage.name);
+          
+        setGeneratedImage(data.publicUrl);
+      } else {
+        toast.error("Could not find a valid image");
+      }
+    } catch (error) {
+      console.error('Error getting random image:', error);
+      toast.error("An error occurred");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  // If no generated image, fetch one on component mount
+  useState(() => {
+    if (!generatedImage) {
+      getRandomImage();
+    }
+  });
+  
+  const handleDownload = () => {
+    if (generatedImage) {
+      const link = document.createElement('a');
+      link.href = generatedImage;
+      link.download = 'generated-image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success("Download started");
+    }
+  };
+  
+  const handleCopyLink = () => {
+    if (generatedImage) {
+      navigator.clipboard.writeText(generatedImage);
+      toast.success("Image link copied to clipboard");
+    }
+  };
+  
+  const handleShare = () => {
+    if (generatedImage) {
+      if (navigator.share) {
+        navigator.share({
+          title: 'My Generated Image',
+          text: 'Check out this AI-generated image!',
+          url: generatedImage,
+        })
+        .then(() => toast.success("Shared successfully"))
+        .catch((error) => console.error('Error sharing:', error));
+      } else {
+        handleCopyLink();
+      }
+    }
+  };
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -27,11 +112,11 @@ const Generate = () => {
               </TabsList>
               
               <TabsContent value="text-to-image" className="pt-6">
-                <PromptInput />
+                <PromptInput onGenerate={getRandomImage} />
               </TabsContent>
               
               <TabsContent value="image-to-image" className="pt-6">
-                <PromptInput />
+                <PromptInput onGenerate={getRandomImage} />
               </TabsContent>
             </Tabs>
             
@@ -49,7 +134,12 @@ const Generate = () => {
           
           <div className="space-y-4">
             <div className="rounded-lg border bg-card min-h-[512px] flex items-center justify-center overflow-hidden">
-              {generatedImage ? (
+              {isLoading ? (
+                <div className="text-center p-8">
+                  <p className="text-muted-foreground mb-2">Generating image...</p>
+                  <div className="w-16 h-16 border-4 border-muted rounded-full border-t-primary animate-spin mx-auto"></div>
+                </div>
+              ) : generatedImage ? (
                 <img 
                   src={generatedImage} 
                   alt="Generated image" 
@@ -58,7 +148,7 @@ const Generate = () => {
               ) : (
                 <div className="text-center p-8">
                   <p className="text-muted-foreground mb-2">Your generated image will appear here</p>
-                  <div className="w-16 h-16 border-4 border-muted rounded-full border-t-primary animate-spin mx-auto"></div>
+                  <Button onClick={getRandomImage} variant="outline">Load Sample Image</Button>
                 </div>
               )}
             </div>
@@ -68,6 +158,7 @@ const Generate = () => {
                 variant="outline" 
                 className="flex items-center gap-2"
                 disabled={!generatedImage}
+                onClick={handleDownload}
               >
                 <Download className="h-4 w-4" />
                 Download
@@ -78,6 +169,7 @@ const Generate = () => {
                   variant="outline"
                   disabled={!generatedImage}
                   className="flex items-center gap-2"
+                  onClick={handleCopyLink}
                 >
                   <Link className="h-4 w-4" />
                   Copy Link
@@ -86,6 +178,7 @@ const Generate = () => {
                   variant="outline"
                   disabled={!generatedImage}
                   className="flex items-center gap-2"
+                  onClick={handleShare}
                 >
                   <Share2 className="h-4 w-4" />
                   Share

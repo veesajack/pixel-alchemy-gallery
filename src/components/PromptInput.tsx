@@ -18,8 +18,14 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Image, ChevronDown, Settings } from "lucide-react";
+import { toast } from "sonner";
+import { uploadImage } from '@/utils/supabaseStorage';
 
-const PromptInput = () => {
+interface PromptInputProps {
+  onGenerate?: () => void;
+}
+
+const PromptInput = ({ onGenerate }: PromptInputProps) => {
   const [prompt, setPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [advancedOpen, setAdvancedOpen] = useState(false);
@@ -31,19 +37,42 @@ const PromptInput = () => {
   const [guidanceScale, setGuidanceScale] = useState(7.5);
   const [resolution, setResolution] = useState('512x512');
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!prompt.trim()) return;
     
     setIsGenerating(true);
     
-    // Mock image generation - in a real app, this would be an API call
-    setTimeout(() => {
-      console.log('Generated image with prompt:', prompt);
-      console.log('Settings:', { model, steps, guidanceScale, resolution });
+    try {
+      // If we have an image to upload, upload it to Supabase
+      if (imageUpload) {
+        const uploadedUrl = await uploadImage(imageUpload);
+        if (uploadedUrl) {
+          toast.success("Image uploaded successfully");
+        } else {
+          toast.error("Failed to upload image");
+        }
+      }
+      
+      // Call the onGenerate callback if provided
+      if (onGenerate) {
+        onGenerate();
+      } else {
+        // Mock image generation - in a real app, this would be an API call
+        setTimeout(() => {
+          console.log('Generated image with prompt:', prompt);
+          console.log('Settings:', { model, steps, guidanceScale, resolution });
+          toast.success("Image generated successfully");
+          setIsGenerating(false);
+        }, 2000);
+      }
+    } catch (error) {
+      console.error('Error during generation:', error);
+      toast.error("Error generating image");
+    } finally {
       setIsGenerating(false);
-    }, 3000);
+    }
   };
   
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {

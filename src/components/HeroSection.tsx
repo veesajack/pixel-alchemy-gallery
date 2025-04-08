@@ -1,9 +1,83 @@
 
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { supabase } from '@/integrations/supabase/client';
 
 const HeroSection = () => {
+  const [heroImage, setHeroImage] = useState('');
+  const [sideImage1, setSideImage1] = useState('');
+  const [sideImage2, setSideImage2] = useState('');
+
+  // Fetch images from Supabase storage
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        // List all files in the 'images' bucket
+        const { data: storageData, error: storageError } = await supabase.storage
+          .from('images')
+          .list();
+          
+        if (storageError || !storageData || storageData.length === 0) {
+          // Fallback to unsplash images if no images are found
+          setHeroImage('https://images.unsplash.com/photo-1581781418937-22b24a3a7b32');
+          setSideImage1('https://images.unsplash.com/photo-1607870383055-03d90bb09f95');
+          setSideImage2('https://images.unsplash.com/photo-1505663912695-implicit-bdd04');
+          return;
+        }
+        
+        // Get public URLs for three random images
+        const filteredImages = storageData.filter(item => !item.id.endsWith('/'));
+        
+        if (filteredImages.length >= 3) {
+          const randomIndexes = getRandomIndexes(filteredImages.length, 3);
+          
+          const { data: heroData } = supabase.storage
+            .from('images')
+            .getPublicUrl(filteredImages[randomIndexes[0]].name);
+            
+          const { data: side1Data } = supabase.storage
+            .from('images')
+            .getPublicUrl(filteredImages[randomIndexes[1]].name);
+            
+          const { data: side2Data } = supabase.storage
+            .from('images')
+            .getPublicUrl(filteredImages[randomIndexes[2]].name);
+            
+          setHeroImage(heroData.publicUrl);
+          setSideImage1(side1Data.publicUrl);
+          setSideImage2(side2Data.publicUrl);
+        } else {
+          // Fallback to unsplash images if not enough images are found
+          setHeroImage('https://images.unsplash.com/photo-1581781418937-22b24a3a7b32');
+          setSideImage1('https://images.unsplash.com/photo-1607870383055-03d90bb09f95');
+          setSideImage2('https://images.unsplash.com/photo-1505663912695-implicit-bdd04');
+        }
+      } catch (error) {
+        console.error('Error fetching images:', error);
+        // Fallback to unsplash images on error
+        setHeroImage('https://images.unsplash.com/photo-1581781418937-22b24a3a7b32');
+        setSideImage1('https://images.unsplash.com/photo-1607870383055-03d90bb09f95');
+        setSideImage2('https://images.unsplash.com/photo-1505663912695-implicit-bdd04');
+      }
+    };
+    
+    fetchImages();
+  }, []);
+  
+  // Helper function to get random indexes
+  const getRandomIndexes = (max: number, count: number) => {
+    const indexes: number[] = [];
+    while (indexes.length < count) {
+      const randomIndex = Math.floor(Math.random() * max);
+      if (!indexes.includes(randomIndex)) {
+        indexes.push(randomIndex);
+      }
+    }
+    return indexes;
+  };
+
   return (
     <section className="w-full py-24 md:py-32 lg:py-40 bg-hero-gradient overflow-hidden">
       <div className="container px-4 md:px-6 relative z-10">
@@ -54,7 +128,7 @@ const HeroSection = () => {
           <div className="relative aspect-[16/9] glass p-2 md:p-4 rounded-4xl overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center">
               <img 
-                src="https://images.unsplash.com/photo-1581781418937-22b24a3a7b32" 
+                src={heroImage || 'https://images.unsplash.com/photo-1581781418937-22b24a3a7b32'} 
                 alt="AI generated art example" 
                 className="w-full h-full object-cover rounded-3xl"
               />
@@ -65,7 +139,7 @@ const HeroSection = () => {
           
           <div className="absolute -top-8 left-1/4 transform -translate-x-1/2 w-32 h-32 md:w-40 md:h-40 glass rounded-2xl p-2 shadow-xl animate-float">
             <img 
-              src="https://images.unsplash.com/photo-1607870383055-03d90bb09f95" 
+              src={sideImage1 || 'https://images.unsplash.com/photo-1607870383055-03d90bb09f95'} 
               alt="AI generated art example" 
               className="w-full h-full object-cover rounded-xl"
             />
@@ -73,7 +147,7 @@ const HeroSection = () => {
           
           <div className="absolute -bottom-10 right-1/4 transform translate-x-1/2 w-32 h-32 md:w-40 md:h-40 glass rounded-2xl p-2 shadow-xl animate-float" style={{ animationDelay: "1s" }}>
             <img 
-              src="https://images.unsplash.com/photo-1505663912695-implicit-bdd04" 
+              src={sideImage2 || 'https://images.unsplash.com/photo-1505663912695-implicit-bdd04'} 
               alt="AI generated art example" 
               className="w-full h-full object-cover rounded-xl"
             />

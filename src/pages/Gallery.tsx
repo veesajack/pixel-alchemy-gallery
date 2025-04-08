@@ -1,8 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import ImageGallery from "@/components/ImageGallery";
+import SeedImages from "@/components/SeedImages";
+import { getPublicUrl } from "@/utils/supabaseStorage";
 
 // Type definitions for our data
 interface Image {
@@ -26,6 +29,15 @@ interface UserProfile {
   username: string;
   display_name: string | null;
   avatar_url: string | null;
+}
+
+interface StorageImage {
+  name: string;
+  id: string;
+  updated_at: string;
+  created_at: string;
+  last_accessed_at: string;
+  metadata: any;
 }
 
 const Gallery = () => {
@@ -77,112 +89,66 @@ const Gallery = () => {
     };
   }, []);
 
-  // For demo purposes, using updated static images with Unsplash URLs that work
-  const mockImages = [
-    {
-      id: 'img1',
-      user_id: 'user1',
-      prompt: 'Futuristic cityscape with flying cars and neon lights',
-      model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1580130544977-624d0e30b923',
-      likes: 125,
-      status: 'completed',
-      is_public: true,
-      created_at: '2023-04-01T12:00:00Z',
-      user: { username: 'techvision' },
-      isLiked: false
-    },
-    {
-      id: 'img2',
-      user_id: 'user2',
-      prompt: 'Underwater city with bioluminescent architecture',
-      model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1516737490857-847e4f4f9dea',
-      likes: 93,
-      status: 'completed',
-      is_public: true,
-      created_at: '2023-04-02T14:30:00Z',
-      user: { username: 'oceandreamer' },
-      isLiked: true
-    },
-    {
-      id: 'img3',
-      user_id: 'user3',
-      prompt: 'Cyberpunk market scene with holographic displays',
-      model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1581781418937-22b24a3a7b32',
-      likes: 87,
-      status: 'completed',
-      is_public: true,
-      created_at: '2023-04-03T09:15:00Z',
-      user: { username: 'cyberpunker' },
-      isLiked: false
-    },
-    {
-      id: 'img4',
-      user_id: 'user4',
-      prompt: 'Fantasy landscape with floating islands and waterfalls',
-      model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1501510913930-edc42f83723b',
-      likes: 142,
-      status: 'completed',
-      is_public: true,
-      created_at: '2023-04-04T16:45:00Z',
-      user: { username: 'fantasyartist' },
-      isLiked: false
-    },
-    {
-      id: 'img5',
-      user_id: 'user5',
-      prompt: 'Steampunk airship battle in the clouds',
-      model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1607870383055-03d90bb09f95',
-      likes: 118,
-      status: 'completed',
-      is_public: true,
-      created_at: '2023-04-05T11:20:00Z',
-      user: { username: 'steampunklover' },
-      isLiked: true
-    },
-    {
-      id: 'img6',
-      user_id: 'user6',
-      prompt: 'Alien landscape with exotic flora and fauna',
-      model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1505663912695-implicit-bdd04',
-      likes: 105,
-      status: 'completed',
-      is_public: true,
-      created_at: '2023-04-06T13:50:00Z',
-      user: { username: 'alienworldcreator' },
-      isLiked: false
-    }
-  ];
-
-  // Mock fetch function that returns the static images
-  const fetchPublicImages = async ({ queryKey }: any) => {
+  // Fetch images from Supabase storage
+  const fetchStorageImages = async ({ queryKey }: any) => {
     const [_, tab] = queryKey;
     
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // Different sorting based on tab
-    if (tab === 'trending') {
-      return [...mockImages].sort((a, b) => b.likes - a.likes);
-    } else if (tab === 'newest') {
-      return [...mockImages].sort((a, b) => {
-        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-      });
-    } else {
-      // For 'following' tab, return fewer images
-      return mockImages.slice(0, 3);
+    try {
+      // List all files in the 'images' bucket
+      const { data: storageData, error: storageError } = await supabase.storage
+        .from('images')
+        .list();
+        
+      if (storageError) {
+        console.error('Error fetching storage images:', storageError);
+        return [];
+      }
+      
+      if (!storageData || storageData.length === 0) {
+        return [];
+      }
+      
+      // Convert storage objects to our image format
+      const images: Image[] = storageData
+        .filter((item): item is StorageImage => !item.id.endsWith('/')) // Filter out folders
+        .map((item, index) => {
+          const publicUrl = getPublicUrl(item.name);
+          return {
+            id: item.id,
+            user_id: 'demo_user',
+            prompt: item.name.replace('.jpg', '').replace(/-/g, ' '),
+            model: 'diffusion-xl',
+            image_url: publicUrl,
+            likes: Math.floor(Math.random() * 100) + 10, // Random likes count
+            status: 'completed',
+            is_public: true,
+            created_at: item.created_at,
+            user: { username: 'pixelartist' },
+            isLiked: false
+          };
+        });
+      
+      // Different sorting based on tab
+      if (tab === 'trending') {
+        return [...images].sort((a, b) => b.likes - a.likes);
+      } else if (tab === 'newest') {
+        return [...images].sort((a, b) => {
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        });
+      } else {
+        // For 'following' tab, return fewer images
+        return images.slice(0, 3);
+      }
+    } catch (error) {
+      console.error('Unexpected error fetching storage images:', error);
+      return [];
     }
   };
 
   // Query for images
   const { data: images, isLoading, error, refetch } = useQuery({
-    queryKey: ['images', activeTab],
-    queryFn: fetchPublicImages,
+    queryKey: ['storage-images', activeTab],
+    queryFn: fetchStorageImages,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
@@ -225,6 +191,13 @@ const Gallery = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">AI Image Gallery</h1>
+      
+      <div className="flex justify-between items-center mb-6">
+        <p className="text-muted-foreground">
+          Browse images stored in Supabase
+        </p>
+        <SeedImages />
+      </div>
       
       {error ? (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">

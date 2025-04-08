@@ -9,12 +9,13 @@ import PricingSection from '@/components/PricingSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowRight, Sparkles, Zap, Lock } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import SeedImages from '@/components/SeedImages';
 
 const Index = () => {
-  // Updated demo images with fresh Unsplash URLs
-  const [demoImages] = useState([
+  const [demoImages, setDemoImages] = useState([
     {
       id: 'demo1',
       url: 'https://images.unsplash.com/photo-1580130544977-624d0e30b923',
@@ -40,6 +41,56 @@ const Index = () => {
       isLiked: false
     }
   ]);
+
+  // Fetch images from Supabase storage on component mount
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        // List all files in the 'images' bucket
+        const { data: storageData, error: storageError } = await supabase.storage
+          .from('images')
+          .list();
+          
+        if (storageError) {
+          console.error('Error fetching storage images:', storageError);
+          return;
+        }
+        
+        if (!storageData || storageData.length === 0) {
+          return;
+        }
+        
+        // Filter out folders
+        const filteredImages = storageData.filter(item => !item.id.endsWith('/'));
+        
+        // Take up to 3 images
+        const imagesToShow = filteredImages.slice(0, 3);
+        
+        if (imagesToShow.length > 0) {
+          const newDemoImages = await Promise.all(imagesToShow.map(async (item, index) => {
+            const { data } = supabase.storage
+              .from('images')
+              .getPublicUrl(item.name);
+              
+            return {
+              id: item.id,
+              url: data.publicUrl,
+              prompt: item.name.replace('.jpg', '').replace(/-/g, ' '),
+              likes: 20 + index * 10,
+              user: 'AI Artist',
+              isLiked: false
+            };
+          }));
+          
+          setDemoImages(newDemoImages);
+        }
+      } catch (error) {
+        console.error('Error fetching images:', error);
+      }
+    };
+    
+    fetchImages();
+  }, []);
 
   // Dummy function for demo purposes
   const handleToggleLike = (id: string) => {
@@ -139,6 +190,10 @@ const Index = () => {
               <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Explore creations from our community and get inspired by what others are making.
               </p>
+            </div>
+            
+            <div className="flex justify-center mb-4">
+              <SeedImages />
             </div>
             
             <ImageGallery 
