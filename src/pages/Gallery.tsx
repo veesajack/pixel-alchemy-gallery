@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
@@ -6,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import ImageGallery from "@/components/ImageGallery";
 import SeedImages from "@/components/SeedImages";
 import { getPublicUrl } from "@/utils/supabaseStorage";
+import { FileObject } from '@supabase/storage-js';
 
 // Type definitions for our data
 interface Image {
@@ -29,15 +29,6 @@ interface UserProfile {
   username: string;
   display_name: string | null;
   avatar_url: string | null;
-}
-
-interface StorageImage {
-  name: string;
-  id: string;
-  updated_at: string;
-  created_at: string;
-  last_accessed_at: string;
-  metadata: any;
 }
 
 const Gallery = () => {
@@ -110,7 +101,7 @@ const Gallery = () => {
       
       // Convert storage objects to our image format
       const images: Image[] = storageData
-        .filter((item): item is StorageImage => !item.id.endsWith('/')) // Filter out folders
+        .filter((item): item is FileObject => !item.name.endsWith('/')) // Filter out folders
         .map((item, index) => {
           const publicUrl = getPublicUrl(item.name);
           return {
