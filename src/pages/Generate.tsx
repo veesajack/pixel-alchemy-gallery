@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Download, Share2, Link } from "lucide-react";
 
 const Generate = () => {
-  const [generatedImage, setGeneratedImage] = useState<string | null>("https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80");
+  const [generatedImage, setGeneratedImage] = useState<string | null>("https://images.unsplash.com/photo-1617396900799-f4ec2b43c7ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80");
   
   // In a real app, this would be connected to the PromptInput component
   // through a context or state management like Redux

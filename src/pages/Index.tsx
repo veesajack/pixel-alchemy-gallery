@@ -17,7 +17,7 @@ const Index = () => {
   const [demoImages] = useState([
     {
       id: 'demo1',
-      url: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      url: 'https://images.unsplash.com/photo-1617396900799-f4ec2b43c7ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       prompt: 'Futuristic city with flying cars',
       likes: 42,
       user: 'creativeminds',
@@ -25,7 +25,7 @@ const Index = () => {
     },
     {
       id: 'demo2',
-      url: 'https://images.unsplash.com/photo-1675703868369-7cc625a36cd4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      url: 'https://images.unsplash.com/photo-1581905764498-f1b60bae941a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       prompt: 'Space station orbiting Earth',
       likes: 28,
       user: 'stargazer',
@@ -33,7 +33,7 @@ const Index = () => {
     },
     {
       id: 'demo3',
-      url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      url: 'https://images.unsplash.com/photo-1582740853304-6e3a85d1ad30?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       prompt: 'Underwater civilization',
       likes: 35,
       user: 'oceanlover',
