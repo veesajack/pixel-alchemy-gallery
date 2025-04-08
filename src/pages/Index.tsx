@@ -17,7 +17,7 @@ const Index = () => {
   const [demoImages] = useState([
     {
       id: 'demo1',
-      url: 'https://images.unsplash.com/photo-1698498570187-af92256d7984?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      url: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       prompt: 'Futuristic city with flying cars',
       likes: 42,
       user: 'creativeminds',
@@ -33,7 +33,7 @@ const Index = () => {
     },
     {
       id: 'demo3',
-      url: 'https://images.unsplash.com/photo-1700096459296-a0f8df31fadb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       prompt: 'Underwater civilization',
       likes: 35,
       user: 'oceanlover',

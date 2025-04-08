@@ -78,14 +78,14 @@ const Gallery = () => {
     };
   }, []);
 
-  // For demo purposes, using static images without calling Supabase
+  // For demo purposes, using updated static images with Unsplash URLs that work
   const mockImages = [
     {
       id: 'img1',
       user_id: 'user1',
       prompt: 'Futuristic cityscape with flying cars and neon lights',
       model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1698498570187-af92256d7984?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image_url: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       likes: 125,
       status: 'completed',
       is_public: true,
@@ -98,7 +98,7 @@ const Gallery = () => {
       user_id: 'user2',
       prompt: 'Underwater city with bioluminescent architecture',
       model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1700096459296-a0f8df31fadb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image_url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       likes: 93,
       status: 'completed',
       is_public: true,
@@ -124,7 +124,7 @@ const Gallery = () => {
       user_id: 'user4',
       prompt: 'Fantasy landscape with floating islands and waterfalls',
       model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1675703398320-a2b361d1c8e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image_url: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       likes: 142,
       status: 'completed',
       is_public: true,
@@ -137,7 +137,7 @@ const Gallery = () => {
       user_id: 'user5',
       prompt: 'Steampunk airship battle in the clouds',
       model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1687372626415-6f980dbae507?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image_url: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       likes: 118,
       status: 'completed',
       is_public: true,
@@ -150,7 +150,7 @@ const Gallery = () => {
       user_id: 'user6',
       prompt: 'Alien landscape with exotic flora and fauna',
       model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1692376754431-9d78af326f91?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image_url: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       likes: 105,
       status: 'completed',
       is_public: true,
