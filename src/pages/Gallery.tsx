@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
@@ -85,7 +84,7 @@ const Gallery = () => {
       user_id: 'user1',
       prompt: 'Futuristic cityscape with flying cars and neon lights',
       model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1617396900799-f4ec2b43c7ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image_url: 'https://images.unsplash.com/photo-1580130544977-624d0e30b923',
       likes: 125,
       status: 'completed',
       is_public: true,
@@ -98,7 +97,7 @@ const Gallery = () => {
       user_id: 'user2',
       prompt: 'Underwater city with bioluminescent architecture',
       model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1581905764498-f1b60bae941a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image_url: 'https://images.unsplash.com/photo-1516737490857-847e4f4f9dea',
       likes: 93,
       status: 'completed',
       is_public: true,
@@ -111,7 +110,7 @@ const Gallery = () => {
       user_id: 'user3',
       prompt: 'Cyberpunk market scene with holographic displays',
       model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1582740853304-6e3a85d1ad30?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image_url: 'https://images.unsplash.com/photo-1581781418937-22b24a3a7b32',
       likes: 87,
       status: 'completed',
       is_public: true,
@@ -124,7 +123,7 @@ const Gallery = () => {
       user_id: 'user4',
       prompt: 'Fantasy landscape with floating islands and waterfalls',
       model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1604871000636-074fa5117945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image_url: 'https://images.unsplash.com/photo-1501510913930-edc42f83723b',
       likes: 142,
       status: 'completed',
       is_public: true,
@@ -137,7 +136,7 @@ const Gallery = () => {
       user_id: 'user5',
       prompt: 'Steampunk airship battle in the clouds',
       model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1618331835717-801e976dcca3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image_url: 'https://images.unsplash.com/photo-1607870383055-03d90bb09f95',
       likes: 118,
       status: 'completed',
       is_public: true,
@@ -150,7 +149,7 @@ const Gallery = () => {
       user_id: 'user6',
       prompt: 'Alien landscape with exotic flora and fauna',
       model: 'diffusion-xl',
-      image_url: 'https://images.unsplash.com/photo-1624395213232-ea2bcd36b865?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image_url: 'https://images.unsplash.com/photo-1505663912695-implicit-bdd04',
       likes: 105,
       status: 'completed',
       is_public: true,
