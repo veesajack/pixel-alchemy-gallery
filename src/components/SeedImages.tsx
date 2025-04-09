@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { seedSampleImages } from "@/utils/supabaseStorage";
 import { toast } from "sonner";
 import { Loader2, AlertCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const SeedImages = () => {
   const [isLoading, setIsLoading] = useState(false);
