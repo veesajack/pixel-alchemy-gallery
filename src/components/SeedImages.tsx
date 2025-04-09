@@ -19,11 +19,12 @@ const SeedImages = () => {
     
     try {
       // Check Supabase connection before proceeding
-      const { data: healthCheck, error: healthError } = await supabase.from('_pgrst_reserved_relations').select('*').limit(1).maybeSingle();
+      const { data: healthCheck, error: healthError } = await supabase.from('images').select('count').limit(1);
       
       if (healthError) {
         console.error("Supabase connection error:", healthError);
         toast.error("Cannot connect to Supabase. Please check your connection.", { id: toastId });
+        setIsLoading(false);
         return;
       }
       
