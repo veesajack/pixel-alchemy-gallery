@@ -40,15 +40,28 @@ export const getPublicUrl = (path: string): string => {
  */
 export const uploadImageFromUrl = async (url: string, filename: string): Promise<string | null> => {
   try {
-    // Fetch the image
-    const response = await fetch(url);
+    // Fetch the image with proper CORS handling
+    const response = await fetch(url, {
+      mode: 'cors',
+      cache: 'no-cache',
+      headers: {
+        'Accept': 'image/*'
+      }
+    });
+    
     if (!response.ok) {
-      throw new Error(`Failed to fetch image: ${response.statusText}`);
+      console.error(`Failed to fetch image: ${response.statusText}`);
+      return null;
     }
     
     // Convert to blob
     const blob = await response.blob();
-    const file = new File([blob], filename, { type: blob.type });
+    
+    // Create a more precise file name with extension based on content type
+    const fileExt = blob.type.split('/')[1] || 'jpg';
+    const safeFilename = `${filename.replace(/\.[^/.]+$/, '')}.${fileExt}`;
+    
+    const file = new File([blob], safeFilename, { type: blob.type });
     
     // Upload to Supabase
     return await uploadImage(file);
@@ -64,42 +77,40 @@ export const uploadImageFromUrl = async (url: string, filename: string): Promise
 export const seedSampleImages = async (): Promise<string[]> => {
   const sampleImages = [
     {
-      url: 'https://images.unsplash.com/photo-1580130544977-624d0e30b923',
-      filename: 'futuristic-city.jpg'
+      url: 'https://source.unsplash.com/random/800x600/?ai',
+      filename: 'ai-generated-landscape.jpg'
     },
     {
-      url: 'https://images.unsplash.com/photo-1516737490857-847e4f4f9dea',
-      filename: 'underwater-city.jpg'
+      url: 'https://source.unsplash.com/random/800x600/?cyberpunk',
+      filename: 'cyberpunk-city.jpg'
     },
     {
-      url: 'https://images.unsplash.com/photo-1581781418937-22b24a3a7b32',
-      filename: 'cyberpunk-market.jpg'
+      url: 'https://source.unsplash.com/random/800x600/?futuristic',
+      filename: 'futuristic-concept.jpg'
     },
     {
-      url: 'https://images.unsplash.com/photo-1501510813829-6e5d8461ccaf',
-      filename: 'fantasy-landscape.jpg'
+      url: 'https://source.unsplash.com/random/800x600/?fantasy',
+      filename: 'fantasy-world.jpg'
     },
     {
-      url: 'https://images.unsplash.com/photo-1607870383193-3a0a13764966',
-      filename: 'steampunk-airship.jpg'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1598313637462-ae7505bfb4e7',
-      filename: 'alien-landscape.jpg'
+      url: 'https://source.unsplash.com/random/800x600/?space',
+      filename: 'space-scene.jpg'
     }
   ];
 
   const uploadedUrls: string[] = [];
 
-  // Upload all images in parallel
-  const uploadPromises = sampleImages.map(async (image) => {
-    const url = await uploadImageFromUrl(image.url, image.filename);
-    if (url) {
-      uploadedUrls.push(url);
+  for (const image of sampleImages) {
+    try {
+      const url = await uploadImageFromUrl(image.url, image.filename);
+      if (url) {
+        uploadedUrls.push(url);
+        console.log(`Successfully uploaded: ${image.filename}`);
+      }
+    } catch (error) {
+      console.error(`Failed to upload ${image.filename}:`, error);
     }
-    return url;
-  });
+  }
 
-  await Promise.all(uploadPromises);
   return uploadedUrls;
 };

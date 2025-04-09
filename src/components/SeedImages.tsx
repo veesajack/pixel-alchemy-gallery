@@ -10,16 +10,18 @@ const SeedImages = () => {
 
   const handleSeedImages = async () => {
     setIsLoading(true);
+    toast.info("Starting to upload sample images...");
+    
     try {
       const urls = await seedSampleImages();
       if (urls.length > 0) {
         toast.success(`Successfully uploaded ${urls.length} sample images`);
       } else {
-        toast.error("Failed to upload any sample images");
+        toast.error("Failed to upload any sample images. Please check console for details.");
       }
     } catch (error) {
-      toast.error("Error seeding images");
-      console.error(error);
+      console.error("Error seeding images:", error);
+      toast.error("Error uploading images. Please check console for details.");
     } finally {
       setIsLoading(false);
     }
