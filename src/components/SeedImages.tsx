@@ -37,12 +37,13 @@ const SeedImages = () => {
         toast.success(`Successfully uploaded ${urls.length} sample images. Refresh the gallery to see them!`, { id: toastId });
         console.log("Successfully uploaded images:", urls);
       } else {
-        toast.error("Failed to upload any sample images. Please see console for details.", { id: toastId });
+        toast.error("Failed to upload any sample images. Please try again.", { id: toastId });
         console.error("No images were successfully uploaded");
+        setErrorCount(prev => prev + 1);
       }
     } catch (error) {
       console.error("Error seeding images:", error);
-      toast.error("Error uploading images. See console for details.", { id: toastId });
+      toast.error("Error uploading images. Please try again.", { id: toastId });
       setErrorCount(prev => prev + 1);
     } finally {
       setIsLoading(false);

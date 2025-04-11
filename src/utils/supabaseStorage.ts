@@ -6,6 +6,9 @@ import { supabase } from "@/integrations/supabase/client";
  */
 export const uploadImage = async (file: File, path?: string): Promise<string | null> => {
   try {
+    // First, ensure the images bucket exists
+    await ensureImagesBucketExists();
+    
     const filePath = path ? `${path}/${file.name}` : file.name;
     const { data, error } = await supabase.storage
       .from('images')
@@ -36,36 +39,90 @@ export const getPublicUrl = (path: string): string => {
 };
 
 /**
+ * Ensure the images bucket exists in Supabase storage
+ */
+export const ensureImagesBucketExists = async (): Promise<boolean> => {
+  try {
+    const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
+    
+    if (bucketsError) {
+      console.error('Error listing buckets:', bucketsError);
+      return false;
+    }
+    
+    const imagesBucketExists = buckets.some(bucket => bucket.name === 'images');
+    
+    if (!imagesBucketExists) {
+      console.log('Creating images bucket...');
+      const { error: createBucketError } = await supabase.storage.createBucket('images', {
+        public: true,
+        fileSizeLimit: 10485760 // 10MB
+      });
+      
+      if (createBucketError) {
+        console.error('Error creating images bucket:', createBucketError);
+        return false;
+      }
+      console.log('Images bucket created successfully');
+    }
+    return true;
+  } catch (error) {
+    console.error('Error checking/creating bucket:', error);
+    return false;
+  }
+};
+
+/**
  * Upload a file from a URL to Supabase storage
  */
 export const uploadImageFromUrl = async (url: string, filename: string): Promise<string | null> => {
   try {
     console.log(`Attempting to fetch image from: ${url}`);
     
-    // Use direct image URLs instead of dynamic services for reliability
-    const response = await fetch(url);
+    // Make sure the images bucket exists before proceeding
+    const bucketExists = await ensureImagesBucketExists();
+    if (!bucketExists) {
+      console.error('Images bucket does not exist and could not be created');
+      return null;
+    }
+    
+    // Replace any initial parameters in the URL for reliability
+    const cleanUrl = url.split('?')[0];
+    
+    // Use a CORS proxy for external URLs if needed
+    let fetchUrl = cleanUrl;
+    
+    // Fetch the image
+    const response = await fetch(fetchUrl, {
+      method: 'GET',
+      headers: {
+        'Accept': 'image/*',
+      },
+    });
     
     if (!response.ok) {
       console.error(`Failed to fetch image: ${response.status} ${response.statusText}`);
       return null;
     }
     
-    // Check if the response is actually an image
-    const contentType = response.headers.get('content-type');
-    if (!contentType || !contentType.startsWith('image/')) {
-      console.error(`Response is not an image: ${contentType}`);
+    // Get the image data as a blob
+    const blob = await response.blob();
+    console.log(`Successfully fetched image, size: ${blob.size} bytes, type: ${blob.type || 'unknown'}`);
+    
+    if (blob.size === 0) {
+      console.error('Empty blob received');
       return null;
     }
     
-    // Convert to blob
-    const blob = await response.blob();
-    console.log(`Successfully fetched image, size: ${blob.size} bytes, type: ${blob.type}`);
+    // Infer file extension if possible, or default to jpg
+    const contentType = blob.type || 'image/jpeg';
+    const fileExt = contentType.split('/')[1] || 'jpg';
     
-    // Create file with proper extension
-    const fileExt = blob.type.split('/')[1] || 'jpg';
-    const safeFilename = `${filename.replace(/\.[^/.]+$/, '')}.${fileExt}`;
+    // Create a clean filename with proper extension
+    const safeFilename = `${filename.replace(/[^a-zA-Z0-9-_]/g, '-')}.${fileExt}`;
     
-    const file = new File([blob], safeFilename, { type: blob.type });
+    // Create a File object from the blob
+    const file = new File([blob], safeFilename, { type: contentType });
     console.log(`Created file object: ${file.name}, size: ${file.size} bytes`);
     
     // Upload to Supabase
@@ -82,60 +139,31 @@ export const uploadImageFromUrl = async (url: string, filename: string): Promise
  * Seed sample images to Supabase storage (for demo purposes)
  */
 export const seedSampleImages = async (): Promise<string[]> => {
-  // Use direct, reliable image URLs instead of the Unsplash random API
+  // Use reliable, high-quality image URLs
   const sampleImages = [
     {
-      url: 'https://images.unsplash.com/photo-1518182170546-07661fd94144?w=800&h=600&fit=crop',
-      filename: 'ai-generated-landscape.jpg'
+      url: 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+      filename: 'sunset-landscape'
     },
     {
-      url: 'https://images.unsplash.com/photo-1502899576159-f224dc2349fa?w=800&h=600&fit=crop',
-      filename: 'cyberpunk-city.jpg'
+      url: 'https://images.pexels.com/photos/3617500/pexels-photo-3617500.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+      filename: 'futuristic-city'
     },
     {
-      url: 'https://images.unsplash.com/photo-1541185934-01b600ea069c?w=800&h=600&fit=crop',
-      filename: 'futuristic-concept.jpg'
+      url: 'https://images.pexels.com/photos/1097456/pexels-photo-1097456.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+      filename: 'abstract-pattern'
     },
     {
-      url: 'https://images.unsplash.com/photo-1568332320368-d85ce6454da8?w=800&h=600&fit=crop',
-      filename: 'fantasy-world.jpg'
+      url: 'https://images.pexels.com/photos/1366957/pexels-photo-1366957.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+      filename: 'mountain-landscape'
     },
     {
-      url: 'https://images.unsplash.com/photo-1454789548928-9efd52dc4031?w=800&h=600&fit=crop',
-      filename: 'space-scene.jpg'
+      url: 'https://images.pexels.com/photos/1252890/pexels-photo-1252890.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+      filename: 'space-galaxy'
     }
   ];
 
   const uploadedUrls: string[] = [];
-
-  // Create the images bucket if it doesn't exist
-  try {
-    const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
-    
-    if (bucketsError) {
-      console.error('Error listing buckets:', bucketsError);
-      return [];
-    }
-    
-    const imagesBucketExists = buckets.some(bucket => bucket.name === 'images');
-    
-    if (!imagesBucketExists) {
-      console.log('Creating images bucket...');
-      const { error: createBucketError } = await supabase.storage.createBucket('images', {
-        public: true,
-        fileSizeLimit: 5242880 // 5MB
-      });
-      
-      if (createBucketError) {
-        console.error('Error creating images bucket:', createBucketError);
-        return [];
-      }
-      console.log('Images bucket created successfully');
-    }
-  } catch (error) {
-    console.error('Error checking/creating bucket:', error);
-    return [];
-  }
 
   // Process each image sequentially to avoid overwhelming the server
   for (const image of sampleImages) {
