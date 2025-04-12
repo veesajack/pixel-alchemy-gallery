@@ -118,7 +118,7 @@ const HeroSection = () => {
           <div className="absolute -bottom-10 right-1/4 transform translate-x-1/2 w-32 h-32 md:w-40 md:h-40 glass rounded-2xl p-2 shadow-xl animate-float" style={{
           animationDelay: "1s"
         }}>
-            <img src={sideImage2 || 'https://images.unsplash.com/photo-1505663912695-implicit-bdd04'} alt="AI generated art example" className="w-full h-full object-cover rounded-xl" />
+            <img src={sideImage2 || 'https://images.unsplash.com/photo-1505663912695-implicit-bdd04'} alt="AI generated art example" className="w-full h-full rounded-xl object-fill" />
           </div>
         </div>
       </div>
