@@ -105,7 +105,7 @@ const HeroSection = () => {
         <div className="mt-20 max-w-6xl mx-auto relative">
           <div className="relative aspect-[16/9] glass p-2 md:p-4 rounded-4xl overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center">
-              <img src={heroImage || 'https://images.unsplash.com/photo-1581781418937-22b24a3a7b32'} alt="AI generated art example" className="w-full h-full object-cover rounded-3xl" />
+              <img src={heroImage || 'https://images.unsplash.com/photo-1581781418937-22b24a3a7b32'} alt="AI generated art example" className="w-full h-full rounded-3xl object-fill" />
             </div>
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-ai-primary/30 rounded-full filter blur-3xl animate-pulse-slow"></div>
             <div className="absolute -bottom-20 -left-10 w-60 h-60 bg-ai-accent/20 rounded-full filter blur-3xl animate-pulse-slow"></div>
